@@ -30,12 +30,12 @@ var array2 = [8,6,5,8,1]
 var array3 = [8,6,5,4,8,1]
 
 
-let res = insertSort(&array2)
+let res = chooseSort(&array2)
 
 print(res)
 
 
-/** 冒泡 */
+/** 冒泡  时间复杂度O(n*n) 空间复杂度O(1)->没有开辟新的内存空间  */
 func bubbleSort(_ nums : inout [Int]) -> [Int] {
     if nums.count <= 1 {
         return nums
@@ -56,24 +56,55 @@ func bubbleSort(_ nums : inout [Int]) -> [Int] {
     }
     return nums
 }
-/**插入**/
+/**插入排序  时间复杂度O(n*n) 空间复杂度O(1)->没有开辟新的内存空间**/
 func insertSort(_ nums : inout [Int]) -> [Int] {
     if nums.count <= 1 {
         return nums
     }
+    //至少要遍历n-1次，所以时间复杂度是O(n)
     for i in 1 ..< nums.count {
         let value = nums[i]
-  
-//        for j in i-1 ..< nums.reversed().count - 1{
-//            if nums.reversed()[j] > value {
-//                nums.reversed()[j+1] = nums.reversed()[j]
+        var j = i - 1
+        // 最好的情况是一次都不插入，所以是O(n),最坏的情况是插入n次 因为是内循环所以是O(n*n)
+        while j >= 0 {
+            if nums[j] > value {
+                nums[j+1] = nums[j]
+            }else{
+                break
+            }
+            // [8,6,5,8,1]
+            j -= 1
+        }
+        nums[j + 1] = value
+    }
+    return nums
+}
+///**选择排序  时间复杂度O(n*n) 空间复杂度O(1)->没有开辟新的内存空间**/
+//func chooseSort(_ nums : inout [Int]) -> [Int] {
+//    if nums.count <= 1 {
+//        return nums
+//    }
+//    //至少要遍历次n次，所以时间复杂度是O(n)
+//    var value = 0
+//    for i in 0 ..< nums.count {
+//      
+//        if value < nums[i] {
+//            value = nums[i]
+//        }
+//        let j = i + 1
+//        for j in 1 ..< nums.count - 1 {
+//            if nums[j] > value {
+//                nums[nums.count - 1] = value
 //            }else{
 //                break
 //            }
 //        }
-    }
-    return nums
-}
+//        nums[nums.count - j] = value
+//        
+//    }
+//    return nums
+//}
+
 
 
 
@@ -129,7 +160,7 @@ func rotate(_ matrix: inout [[Int]]) {
 }
 
 
-//[["8","3",".",".","7",".",".",".","."]
+//                         [["8","3",".",".","7",".",".",".","."]
 //                         ,["6",".",".","1","9","5",".",".","."]
 //                         ,[".","9","8",".",".",".",".","6","."]
 //                         ,["8",".",".",".","6",".",".",".","3"]
@@ -141,27 +172,34 @@ func rotate(_ matrix: inout [[Int]]) {
 
 /**数独，将数据分别先装进字典的数组中，然后在有key的情况下依次赋值，如果横，竖，小方格均不存在，将其加入到字典的数组中，如果存在，则说明数据重复**/
 func isValidSudoku(_ board: [[Character]]) -> Bool {
-    print(board)
+    // 创建三个存储 Character:Int 类型字典的数组
     var rowDicArray = [[Character:Int]]()
     var columnsDicArray = [[Character:Int]]()
     var subBoxDicArray =  [[Character:Int]]()
+    // 给每个数据添加值为Character为key value为0的数据
     for _ in 0 ..< board.count {
         rowDicArray.append([Character:Int]())
         columnsDicArray.append([Character:Int]())
         subBoxDicArray.append([Character:Int]())
     }
+    // 双重循环，获取两个下标
     for i in 0 ..< board.count {
         for j in 0 ..< board[i].count {
+            // 获取到数据，和小方格的坐标
             let num = board[i][j], boxIndex = i/3 + (j/3)*3
             if num == "."{
                 continue
+                // 判断横行=》字典中key 为num 的值是否存在
             }else if rowDicArray[i][num] ?? 0 > 0{
                 return false
+                // 判断竖行行=》字典中key 为num 的值是否存在
             }else if columnsDicArray[j][num] ?? 0 > 0{
                 return false
+                // 判断小方格=》字典中key 为num 的值是否存在
             }else if subBoxDicArray[boxIndex][num] ?? 0 > 0{
                 return false
             }else{
+                // 如果不存在将key为num 的值 = 1
                 rowDicArray[i][num] = 1
                 columnsDicArray[j][num] = 1
                 subBoxDicArray[boxIndex][num] = 1
