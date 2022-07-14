@@ -8,7 +8,13 @@
 import Foundation
 import AppKit
 
+/**
+ 反转字符串
+ 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
 
+ 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+
+ */
 
 
 //        self.navigationController?.navigationBar.isTranslucent = true;
@@ -26,19 +32,66 @@ var array = [-336,513,-560,-481,-174,101,-997,40,-527,-784,-283,-336,513,-560,-4
 
 var array1 = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]
 
-var array2 = [8,6,5,8,1]
+var array2 = ["h","e","l","l","o"]
 var array3 = [8,6,5,4,8,1]
 
 
-let res = rotate(&array1)
-print("______")
-print(res)
+//let res = rotate(&array1)
+//print("______")
+//print(res)
+
+
+//reverseString(&array2)
+/**
+ 反转字符串
+ 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
+
+ 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+ 
+ */
+reverse(132323)
+
+  
+func reverseString(_ s: inout [String]) {
+    var fast = 0, slow = s.count - 1
+    
+    while(fast < slow){
+        if fast < slow {
+            let other = s[fast]
+            s[fast] = s[slow]
+            s[slow] = other
+        }
+        fast += 1
+        slow -= 1
+    }
+}
+/**
+ 整数翻转
+ 给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。
+
+ 如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。
+
+ 假设环境不允许存储 64 位整数（有符号或无符号）。
+
+ */
+func reverse(_ x: Int) -> Int {
+    var rev = 0
+    var other = x
+    let maxNum = 1 << 31
+    while other != 0{
+        if rev < -maxNum || rev > maxNum - 1 {
+            return 0;
+        }
+        let digit = x % 10;
+        other /= 10;
+        rev = rev * 10 + digit;
+    }
+    return rev
+}
+
+
 
 /**归并排序，利用递归的思想来做排序**/
-
-
-
-
 func mergeSort(arr:inout [Int]) {
         guard arr.count > 0 else {
             return
